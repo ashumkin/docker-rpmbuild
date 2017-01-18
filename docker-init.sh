@@ -60,9 +60,18 @@ runuser rpmbuild -- /usr/local/bin/docker-rpm-build.sh "${SPEC}" "$@"
 # with source so that the caller of this image doesn't run into
 # permission issues
 mkdir -p "${OUTDIR}"
+if test -n "${COPY_RPMS_ONLY}"
+then
+	SUFFIX="/**/*.rpm"
+fi
 cp ${VERBOSE:+-v} -a --reflink=auto \
-  ~rpmbuild/rpmbuild/{RPMS,SRPMS} "${OUTDIR}/"
-TO_CHOWN=( "${OUTDIR}/"{RPMS,SRPMS} )
+  ~rpmbuild/rpmbuild/{S,}RPMS$SUFFIX "${OUTDIR}/" || echo
+if test -n "${COPY_RPMS_ONLY}"
+then
+	TO_CHOWN=( "${OUTDIR}/"*.rpm )
+else
+	TO_CHOWN=( "${OUTDIR}/"{S,}RPMS )
+fi
 if [[ ${OUTDIR} != ${PWD} ]]; then
   TO_CHOWN=( "${OUTDIR}" )
 fi
