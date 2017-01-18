@@ -38,7 +38,7 @@ if [[ -n ${PRE_BUILDDEP} ]]; then
 fi
 
 # install build dependencies declared in the specfile
-yum-builddep -y "${SPEC}"
+dnf builddep -y "${SPEC}"
 
 # drop to the shell for debugging manually
 if ! ${BUILD}; then

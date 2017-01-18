@@ -20,11 +20,11 @@
 # - https://registry.hub.docker.com/u/nishigori/rpmbuild
 # - https://registry.hub.docker.com/u/sydneyuni/rpm-build-env/
 
-FROM centos:7
-MAINTAINER jitakirin <jitakirin@gmail.com>
+FROM fedora:23
+MAINTAINER Alexey Shumkin <alex.crezoff@gmail.com>
 
-RUN yum install -y rpmdevtools yum-utils && \
-    yum clean all && \
+RUN dnf install -y rpmdevtools dnf-plugins-core && \
+    dnf clean all && \
     rm -r -f /var/cache/*
 
 RUN useradd rpmbuild
