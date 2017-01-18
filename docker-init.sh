@@ -38,7 +38,11 @@ if [[ -n ${PRE_BUILDDEP} ]]; then
 fi
 
 # install build dependencies declared in the specfile
-dnf builddep -y "${SPEC}"
+if test -z "$SKIP_YUM_DEPS" \
+	&& grep --ignore-case --perl-regexp --regexp '^(Build)?Requires\b' "${SPEC}"
+then
+  dnf builddep -y "${SPEC}"
+fi
 
 # drop to the shell for debugging manually
 if ! ${BUILD}; then
